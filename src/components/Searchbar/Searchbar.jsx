@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from 'prop-types';
@@ -10,24 +10,16 @@ import {
   Input,
 } from './Searchbar.styled';
 
-class Searchbar extends React.Component {
-  static defaultProps = {
-    search: '',
-  };
+export default function Searchbar({ onSubmit }) {
+  const [search, setSearch] = useState('');
 
-  state = {
-    search: this.props.search,
+  const handleSearchChange = evt => {
+    setSearch(evt.currentTarget.value.toLowerCase());
   };
-
-  handleSearchChange = evt => {
-    this.setState({
-      search: evt.currentTarget.value.toLowerCase(),
-    });
-  };
-  handleSubmit = evt => {
+  const handleSubmit = evt => {
     evt.preventDefault();
 
-    if (this.state.search.trim() === '') {
+    if (search.trim() === '') {
       const notifyInfo = () =>
         toast.info('Please, enter search criteria', {
           icon: false,
@@ -39,38 +31,35 @@ class Searchbar extends React.Component {
           progress: undefined,
         });
       notifyInfo();
-      this.setState({ search: '' });
+      setSearch('');
       return;
     }
 
-    this.props.onSubmit(this.state.search);
-    this.setState({ search: '' });
+    onSubmit(search);
+    setSearch('');
   };
-  render() {
-    return (
-      <Header>
-        <SearchForm onSubmit={this.handleSubmit}>
-          <SearchFormButton type="submit" aria-label="Search">
-            <SearchFormLabel>Search</SearchFormLabel>
-          </SearchFormButton>
 
-          <Input
-            className="SearchForm-input"
-            type="text"
-            value={this.state.search}
-            autocomplete="off"
-            onChange={this.handleSearchChange}
-            autoFocus
-            placeholder="Search images and photos"
-          />
-        </SearchForm>
-      </Header>
-    );
-  }
+  return (
+    <Header>
+      <SearchForm onSubmit={handleSubmit}>
+        <SearchFormButton type="submit" aria-label="Search">
+          <SearchFormLabel>Search</SearchFormLabel>
+        </SearchFormButton>
+
+        <Input
+          className="SearchForm-input"
+          type="text"
+          value={search}
+          autocomplete="off"
+          onChange={handleSearchChange}
+          autoFocus
+          placeholder="Search images and photos"
+        />
+      </SearchForm>
+    </Header>
+  );
 }
 
 Searchbar.propTypes = {
   onSubmit: PropTypes.func,
 };
-
-export default Searchbar;
