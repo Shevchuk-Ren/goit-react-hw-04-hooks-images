@@ -21,7 +21,6 @@ export default function Modal({ children, onClose }) {
 
   const handleBackdropClick = evt => {
     if (evt.target === evt.currentTarget) {
-      console.log(modalRoot, `qqqq`);
       onClose();
     }
   };

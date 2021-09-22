@@ -46,7 +46,7 @@ export default function App() {
         }
 
         setSpinner(false);
-        setImages(images => [...gallery.hits, ...images]);
+        setImages(images => [...images, ...gallery.hits]);
         setStatus('resolved');
         setTotalHits(gallery.hits.length);
       })
@@ -62,10 +62,12 @@ export default function App() {
     setPhoto(photo);
     setShowModal(!showModal);
   };
-  const handleFormSubmit = search => {
-    setSearch(search);
+  const handleFormSubmit = searchInput => {
+    if (search === searchInput) return;
+    setSearch(searchInput);
     setImages([]);
     setPage(1);
+
     setStatus('pending');
   };
 
