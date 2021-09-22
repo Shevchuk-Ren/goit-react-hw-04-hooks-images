@@ -67,7 +67,7 @@ export default function App() {
     setSearch(searchInput);
     setImages([]);
     setPage(1);
-
+    setTotalHits(0);
     setStatus('pending');
   };
 
